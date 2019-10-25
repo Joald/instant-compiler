@@ -1,0 +1,402 @@
+
+./Setup.hs,15
+main main1,2
+
+./app/Main.hs,231
+module Main Main1,2
+type ParseFun ParseFun21,22
+myLLexer myLLexer23,24
+type Verbosity Verbosity25,26
+putStrV putStrV27,28
+runFile runFile30,31
+run run33,34
+showTree showTree46,47
+usage usage52,53
+main main63,64
+
+./test/Spec.hs,15
+main main0,1
+
+./instester/Tester.hs,499
+module Main Main3,4
+type MyResult MyResult15,16
+infix 3 `orDie`orDie17,18
+die die21,22
+requireDir requireDir24,25
+main main27,28
+tester tester34,35
+testJvm testJvm53,54
+testLlvm testLlvm67,68
+testJvmOne testJvmOne76,77
+testLlvmOne testLlvmOne88,89
+testBadOne testBadOne100,101
+lastStderrHead lastStderrHead110,111
+lastStderrHeadIs lastStderrHeadIs117,118
+findArchive findArchive127,128
+isSuffixOfTFP isSuffixOfTFP143,144
+tar tar146,147
+havingExt havingExt151,152
+
+./src/BNFC/AbsInstant.hs,403
+module BNFC.AbsInstant BNFC.AbsInstant3,4
+newtype Ident Ident5,6
+data Program Program8,9
+data Program = Prog Prog8,9
+data Stmt Stmt11,12
+data Stmt = SAss SAss11,12
+data Stmt = SAss Ident Exp | SExp SExp11,12
+data ExpExp14,15
+    = ExpAdd ExpAdd15,16
+    | ExpSub ExpSub16,17
+    | ExpMul ExpMul17,18
+    | ExpDiv ExpDiv18,19
+    | ExpLit ExpLit19,20
+    | ExpVar ExpVar20,21
+
+./src/BNFC/ParInstant.hs,5323
+module BNFC.ParInstant BNFC.ParInstant6,7
+newtype HappyAbsSyn HappyAbsSyn18,19
+type HappyAny HappyAny20,21
+newtype HappyWrap11 HappyWrap1124,25
+happyIn11 happyIn1125,26
+happyOut11 happyOut1128,29
+newtype HappyWrap12 HappyWrap1231,32
+happyIn12 happyIn1232,33
+happyOut12 happyOut1235,36
+newtype HappyWrap13 HappyWrap1338,39
+happyIn13 happyIn1339,40
+happyOut13 happyOut1342,43
+newtype HappyWrap14 HappyWrap1445,46
+happyIn14 happyIn1446,47
+happyOut14 happyOut1449,50
+newtype HappyWrap15 HappyWrap1552,53
+happyIn15 happyIn1553,54
+happyOut15 happyOut1556,57
+newtype HappyWrap16 HappyWrap1659,60
+happyIn16 happyIn1660,61
+happyOut16 happyOut1663,64
+newtype HappyWrap17 HappyWrap1766,67
+happyIn17 happyIn1767,68
+happyOut17 happyOut1770,71
+newtype HappyWrap18 HappyWrap1873,74
+happyIn18 happyIn1874,75
+happyOut18 happyOut1877,78
+newtype HappyWrap19 HappyWrap1980,81
+happyIn19 happyIn1981,82
+happyOut19 happyOut1984,85
+newtype HappyWrap20 HappyWrap2087,88
+happyIn20 happyIn2088,89
+happyOut20 happyOut2091,92
+happyInTok happyInTok94,95
+happyOutTok happyOutTok97,98
+happyExpList happyExpList102,103
+happyExpListPerState happyExpListPerState106,107
+happyActOffsets happyActOffsets118,119
+happyGotoOffsets happyGotoOffsets121,122
+happyAdjustOffset happyAdjustOffset124,125
+happyDefActions happyDefActions127,128
+happyCheck happyCheck130,131
+happyTable happyTable133,134
+happyReduceArr happyReduceArr136,137
+happy_n_terms happy_n_terms158,159
+happy_n_nonterms happy_n_nonterms159,160
+happyReduce_8 happyReduce_8161,162
+happyReduction_8 happyReduction_8162,163
+happyReduce_9 happyReduce_9168,169
+happyReduction_9 happyReduction_9169,170
+happyReduce_10 happyReduce_10175,176
+happyReduction_10 happyReduction_10176,177
+happyReduce_11 happyReduce_11182,183
+happyReduction_11 happyReduction_11183,184
+happyReduce_12 happyReduce_12192,193
+happyReduction_12 happyReduction_12193,194
+happyReduce_13 happyReduce_13199,200
+happyReduction_13 happyReduction_13200,201
+happyReduce_14 happyReduce_14204,205
+happyReduction_14 happyReduction_14205,206
+happyReduce_15 happyReduce_15211,212
+happyReduction_15 happyReduction_15212,213
+happyReduce_16 happyReduce_16221,222
+happyReduction_16 happyReduction_16222,223
+happyReduce_17 happyReduce_17231,232
+happyReduction_17 happyReduction_17232,233
+happyReduce_18 happyReduce_18238,239
+happyReduction_18 happyReduction_18239,240
+happyReduce_19 happyReduce_19248,249
+happyReduction_19 happyReduction_19249,250
+happyReduce_20 happyReduce_20255,256
+happyReduction_20 happyReduction_20256,257
+happyReduce_21 happyReduce_21265,266
+happyReduction_21 happyReduction_21266,267
+happyReduce_22 happyReduce_22275,276
+happyReduction_22 happyReduction_22276,277
+happyReduce_23 happyReduce_23282,283
+happyReduction_23 happyReduction_23283,284
+happyReduce_24 happyReduce_24289,290
+happyReduction_24 happyReduction_24290,291
+happyReduce_25 happyReduce_25296,297
+happyReduction_25 happyReduction_25297,298
+happyReduce_26 happyReduce_26305,306
+happyReduction_26 happyReduction_26306,307
+happyNewToken happyNewToken312,313
+happyError_ happyError_331,332
+happyThen happyThen334,335
+happyReturn happyReturn336,337
+happyThen1 happyThen1338,339
+happyReturn1 happyReturn1339,340
+happyError' happyError'341,342
+pProgram pProgram343,344
+pStmt pStmt346,347
+pListStmt pListStmt349,350
+pExp1 pExp1352,353
+pExp2 pExp2355,356
+pExp3 pExp3358,359
+pExp4 pExp4361,362
+pExp pExp364,365
+happySeq happySeq367,368
+returnM returnM370,371
+thenM thenM373,374
+happyError happyError376,377
+myLexer myLexer384,385
+data Happy_IntList Happy_IntList429,430
+data Happy_IntList = HappyCons HappyCons429,430
+infixr 9 `HappyStk`HappyStk470,471
+happyParse happyParse476,477
+happyAccept 0# tk st sts (_ `HappyStk`HappyStk484,485
+happyAccept happyAccept486,487
+happyDoAction happyDoAction494,495
+indexShortOffAddr indexShortOffAddr519,520
+happyLt happyLt531,532
+readArrayBit readArrayBit534,535
+data HappyAddr HappyAddr543,544
+data HappyAddr = HappyA# HappyA#543,544
+happyShift new_state 0# tk st sts stk@(x `HappyStk`HappyStk564,565
+happyShift happyShift569,570
+happySpecReduce_0 happySpecReduce_0574,575
+happySpecReduce_1 happySpecReduce_1579,580
+happySpecReduce_1 nt fn j tk _ sts@((HappyCons (st@(action)) (_))) (v1`HappyStk`HappyStk581,582
+happySpecReduce_2 happySpecReduce_2585,586
+happySpecReduce_2 nt fn j tk _ (HappyCons (_) (sts@((HappyCons (st@(action)) (_))))) (v1`HappyStk`HappyStk587,588
+happySpecReduce_3 happySpecReduce_3591,592
+happySpecReduce_3 nt fn j tk _ (HappyCons (_) ((HappyCons (_) (sts@((HappyCons (st@(action)) (_))))))) (v1`HappyStk`HappyStk593,594
+happyReduce happyReduce597,598
+happyMonadReduce happyMonadReduce605,606
+happyMonad2Reduce happyMonad2Reduce613,614
+happyDrop happyDrop630,631
+happyDropStk happyDropStk633,634
+happyDropStk n (x `HappyStk`HappyStk634,635
+happyGoto happyGoto640,641
+happyFail explist 0# tk old_st _ stk@(x `HappyStk`HappyStk654,655
+happyFail happyFail672,673
+notHappyAtAll notHappyAtAll678,679
+happyTcHack happyTcHack685,686
+happyDoSeq, happyDontSeq happyDontSeq696,697
+happyDoSeq,happyDoSeq696,697
+happyDontSeq happyDontSeq698,699
+
+./src/BNFC/PrintInstant.hs,969
+module BNFC.PrintInstant BNFC.PrintInstant10,11
+printTree printTree17,18
+type Doc Doc20,21
+doc doc22,23
+render render25,26
+parenth parenth47,48
+concatS concatS50,51
+concatD concatD53,54
+replicateS replicateS56,57
+class Print Print61,62
+  prt prt62,63
+  prtList prtList63,64
+instance {-# OVERLAPPABLE #-} Print Print a => Print [a]66,67
+  prt prt67,68
+instance Print Print Char69,70
+  prt prt70,71
+  prtList prtList71,72
+mkEsc mkEsc73,74
+prPrec prPrec81,82
+instance Print Print Integer84,85
+  prt prt85,86
+instance Print Print Double87,88
+  prt prt88,89
+instance Print Print BNFC-AbsInstant-Ident90,91
+  prt prt91,92
+instance Print Print BNFC-AbsInstant-Program93,94
+  prt prt94,95
+instance Print Print BNFC-AbsInstant-Stmt97,98
+  prt prt98,99
+  prtList prtList101,102
+instance Print Print [BNFC-AbsInstant-Stmt]105,106
+  prt prt106,107
+instance Print Print BNFC-AbsInstant-Exp108,109
+  prt prt109,110
+
+./src/BNFC/SkelInstant.hs,205
+module BNFC.SkelInstant BNFC.SkelInstant0,1
+type Result Result6,7
+failure failure8,9
+transIdent transIdent11,12
+transProgram transProgram15,16
+transStmt transStmt19,20
+transExp transExp24,25
+
+./src/BNFC/ErrM.hs,517
+module BNFC.ErrM BNFC.ErrM4,5
+data Err Err11,12
+data Err a = Ok Ok11,12
+data Err a = Ok a | Bad Bad11,12
+instance Monad Monad Err14,15
+  return return15,16
+  Ok Ok16,17
+  Bad Bad17,18
+instance Applicative Applicative Err19,20
+  pure pure20,21
+  (B(Bads)21,22
+  (O(Okf)22,23
+instance Functor Functor Err24,25
+  fmap fmap25,26
+instance MonadPlus MonadPlus Err27,28
+  mzero mzero28,29
+  mplus mplus29,30
+instance Alternative Alternative Err32,33
+  empty empty33,34
+  (<(<|>)34,35
+
+./src/BNFC/LexInstant.hs,2054
+module BNFC.LexInstant BNFC.LexInstant6,7
+alex_tab_size alex_tab_size30,31
+alex_base alex_base32,33
+alex_table alex_table36,37
+alex_check alex_check40,41
+alex_deflt alex_deflt44,45
+alex_accept alex_accept48,49
+alex_actions alex_actions57,58
+tok tok66,67
+share share69,70
+data Tok Tok72,73
+   TS TS73,74
+ | TL TL74,75
+ | TI TI75,76
+ | TV TV76,77
+ | TD TD77,78
+ | TC TC78,79
+data Token Token82,83
+   PT PT83,84
+ | Err Err84,85
+printPosn printPosn87,88
+tokenPos tokenPos90,91
+tokenPosn tokenPosn94,95
+tokenLineCol tokenLineCol98,99
+posLineCol posLineCol101,102
+mkPosToken mkPosToken104,105
+prToken prToken107,108
+data BTree BTree118,119
+data BTree = N N118,119
+data BTree = N | B B118,119
+eitherResIdent eitherResIdent120,121
+resWords resWords128,129
+unescapeInitTail unescapeInitTail133,134
+data Posn Posn150,151
+data Posn = Pn Pn150,151
+alexStartPos alexStartPos153,154
+alexMove alexMove156,157
+type Byte Byte161,162
+type AlexInput AlexInput163,164
+tokens tokens168,169
+alexGetByte alexGetByte179,180
+alexInputPrevChar alexInputPrevChar189,190
+utf8Encode utf8Encode193,194
+alex_action_1 alex_action_1213,214
+alex_action_2 alex_action_2214,215
+alex_action_3 alex_action_3215,216
+data AlexAddr AlexAddr269,270
+data AlexAddr = AlexA# AlexA#269,270
+uncheckedShiftL# uncheckedShiftL#272,273
+alexIndexInt16OffAddr alexIndexInt16OffAddr276,277
+alexIndexInt32OffAddr alexIndexInt32OffAddr293,294
+quickIndex quickIndex315,316
+data AlexReturn AlexReturn327,328
+  = AlexEOFAlexEOF328,329
+  | AlexError AlexError329,330
+  | AlexSkip AlexSkip330,331
+  | AlexToken AlexToken331,332
+alexScan alexScan334,335
+alexScanUser alexScanUser337,338
+alex_scan_tkn alex_scan_tkn368,369
+data AlexLastAccAlexLastAcc415,416
+  = AlexNoneAlexNone416,417
+  | AlexLastAcc AlexLastAcc417,418
+  | AlexLastSkip AlexLastSkip418,419
+data AlexAcc AlexAcc420,421
+  = AlexAccNoneAlexAccNone421,422
+  | AlexAcc AlexAcc422,423
+  | AlexAccSkipAlexAccSkip423,424
+
+./src/JVM.hs,496
+module JVM JVM0,1
+type StackLen StackLen10,11
+type JVMM JVMM12,13
+type CodeGen CodeGen14,15
+jvmToString jvmToString16,17
+processJVM processJVM19,20
+bakeJVM bakeJVM22,23
+finalize finalize25,26
+optimize optimize28,29
+compileProgram compileProgram33,34
+compileStmts compileStmts36,37
+compileExp compileExp54,55
+compileCommutative compileCommutative62,63
+compileNonCommutative compileNonCommutative71,72
+blockStackUsage blockStackUsage77,78
+stackUsage stackUsage80,81
+
+./src/Processor.hs,188
+module Processor Processor0,1
+type IdChk IdChk11,12
+checkExp checkExp13,14
+checkIdents checkIdents31,32
+processProgram processProgram40,41
+_processProgram _processProgram43,44
+
+./src/Abs.hs,1201
+module Abs Abs0,1
+data JVMCodeJVMCode2,3
+  = IPreludeIPrelude3,4
+  | IEpilogueIEpilogue4,5
+  | Ilimitlocals Ilimitlocals5,6
+  | Ilimitstack Ilimitstack6,7
+  | IgetstaticprintIgetstaticprint7,8
+  | IinvokevirtualprintIinvokevirtualprint8,9
+  | Iiload Iiload9,10
+  | Iiload_0Iiload_010,11
+  | Iiload_1Iiload_111,12
+  | Iiload_2Iiload_212,13
+  | Iiload_3Iiload_313,14
+  | IiaddIiadd14,15
+  | IisubIisub15,16
+  | IimulIimul16,17
+  | IidivIidiv17,18
+  | Iistore Iistore18,19
+  | Iistore_0Iistore_019,20
+  | Iistore_1Iistore_120,21
+  | Iistore_2Iistore_221,22
+  | Iistore_3Iistore_322,23
+  | Ibipush Ibipush23,24
+  | Iiconst_m1Iiconst_m124,25
+  | Iiconst_0Iiconst_025,26
+  | Iiconst_1Iiconst_126,27
+  | Iiconst_2Iiconst_227,28
+  | Iiconst_3Iiconst_328,29
+  | Iiconst_4Iiconst_429,30
+  | Iiconst_5Iiconst_530,31
+showJVM showJVM34,35
+iload iload52,53
+istore istore59,60
+iconst iconst66,67
+data LLVMCode LLVMCode75,76
+data LLVMCode = UndefinedUndefined75,76
+data Code Code76,77
+data Code = JVMC JVMC76,77
+data Code = JVMC JVMCode | LLVMC LLVMC76,77
+data Mode Mode78,79
+data Mode = JVM JVM78,79
+data Mode = JVM | LLVMLLVM78,79
