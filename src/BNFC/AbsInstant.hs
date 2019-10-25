@@ -6,7 +6,7 @@ module BNFC.AbsInstant where
 newtype Ident = Ident String
   deriving (Eq, Ord, Show, Read)
 
-data Program = Prog [Stmt]
+newtype Program = Prog { getStmts :: [Stmt] }
   deriving (Eq, Ord, Show, Read)
 
 data Stmt = SAss Ident Exp | SExp Exp

@@ -28,18 +28,18 @@ type Verbosity = Int
 putStrV :: Verbosity -> String -> IO ()
 putStrV v s = when (v > 1) $ putStrLn s
 
-runFile :: Verbosity -> ParseFun Program -> FilePath -> IO ()
-runFile v p f = readFile f >>= run v p
+runFile :: Mode -> Verbosity -> ParseFun Program -> FilePath -> IO ()
+runFile mode v p f = readFile f >>= run mode v p
 
-run :: Verbosity -> ParseFun Program -> String -> IO ()
-run v p s = let ts = myLLexer s in case p ts of
+run :: Mode -> Verbosity -> ParseFun Program -> String -> IO ()
+run mode v p s = let ts = myLLexer s in case p ts of
            Bad s    -> do putStrLn "\nParse              Failed...\n"
                           putStrV v "Tokens:"
                           putStrV v $ show ts
                           putStrLn s
                           exitFailure
            Ok  tree -> do --putStrLn "\nParse Successful!"
-                          putStrLn $ processProgram JVM tree
+                          putStrLn $ processProgram mode tree
 
                           exitSuccess
 
@@ -66,10 +66,10 @@ main = do
   args <- getArgs
   case args of
     ["--help"] -> usage
-    [] -> getContents >>= run 2 pProgram
-    "-s":fs -> mapM_ (runFile 0 pProgram) fs
-    fs -> mapM_ (runFile 2 pProgram) fs
-
+    [] -> putStrLn "Choose JVM or LLVM please." >> exitFailure
+    --"-s":fs -> mapM_ (runFile 0 pProgram) fs
+    "llvm":fs -> mapM_ (runFile LLVM 2 pProgram) fs
+    "jvm":fs -> mapM_ (runFile JVM 2 pProgram) fs
 
 
 

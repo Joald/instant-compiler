@@ -10,7 +10,7 @@
 .end method
 
 .method public static main([Ljava/lang/String;)V
-.limit stack 4
+.limit stack 5
 .limit locals 15
 iconst_0
 istore_1
@@ -74,6 +74,9 @@ istore 13
 iconst_2
 istore 14
 getstatic  java/lang/System/out Ljava/io/PrintStream;
+iload_2
+iconst_2
+idiv
 iload 10
 iconst_2
 idiv
@@ -99,9 +102,6 @@ iload 4
 iadd
 iload_3
 iadd
-iload_2
-iconst_2
-idiv
 iadd
 iconst_2
 iload_1

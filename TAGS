@@ -37,11 +37,25 @@ isSuffixOfTFP isSuffixOfTFP143,144
 tar tar146,147
 havingExt havingExt151,152
 
-./src/BNFC/AbsInstant.hs,403
+./src/LLVM.hs,317
+module LLVM LLVM1,2
+type LLVMM LLVMM12,13
+type CodeGen CodeGen14,15
+freshName freshName16,17
+processLLVM processLLVM22,23
+bakeLLVM bakeLLVM25,26
+compileProgram compileProgram28,29
+compileStmts compileStmts31,32
+compileExpr compileExpr50,51
+type BinOp BinOp62,63
+compileBinary compileBinary64,65
+
+./src/BNFC/AbsInstant.hs,457
 module BNFC.AbsInstant BNFC.AbsInstant3,4
 newtype Ident Ident5,6
-data Program Program8,9
-data Program = Prog Prog8,9
+newtype Program Program8,9
+newtype Program = Prog Prog8,9
+newtype Program = Prog { getStmts getStmts8,9
 data Stmt Stmt11,12
 data Stmt = SAss SAss11,12
 data Stmt = SAss Ident Exp | SExp SExp11,12
@@ -331,23 +345,30 @@ data AlexAcc AlexAcc420,421
   | AlexAcc AlexAcc422,423
   | AlexAccSkipAlexAccSkip423,424
 
-./src/JVM.hs,496
+./src/JVM.hs,734
 module JVM JVM0,1
-type StackLen StackLen10,11
 type JVMM JVMM12,13
-type CodeGen CodeGen14,15
-jvmToString jvmToString16,17
-processJVM processJVM19,20
-bakeJVM bakeJVM22,23
-finalize finalize25,26
-optimize optimize28,29
-compileProgram compileProgram33,34
-compileStmts compileStmts36,37
-compileExp compileExp54,55
-compileCommutative compileCommutative62,63
-compileNonCommutative compileNonCommutative71,72
-blockStackUsage blockStackUsage77,78
-stackUsage stackUsage80,81
+mapFst mapFst14,15
+mapSnd mapSnd16,17
+type CodeGen CodeGen19,20
+jvmToString jvmToString21,22
+processJVM processJVM24,25
+bakeJVM bakeJVM27,28
+finalize finalize30,31
+optimize optimize33,34
+compileProgram compileProgram38,39
+compileStmts compileStmts41,42
+appendInstr appendInstr57,58
+compileExp compileExp61,62
+compileCommutative compileCommutative69,70
+compileOrderedExps compileOrderedExps76,77
+compileNonCommutative compileNonCommutative82,83
+blockStackUsage blockStackUsage90,91
+stackUsage stackUsage93,94
+maxStackUsage maxStackUsage120,121
+stmtStackUsage stmtStackUsage123,124
+exprStackUsage exprStackUsage127,128
+opStackUsage opStackUsage135,136
 
 ./src/Processor.hs,188
 module Processor Processor0,1
@@ -357,7 +378,7 @@ checkIdents checkIdents31,32
 processProgram processProgram40,41
 _processProgram _processProgram43,44
 
-./src/Abs.hs,1201
+./src/Abs.hs,1602
 module Abs Abs0,1
 data JVMCodeJVMCode2,3
   = IPreludeIPrelude3,4
@@ -388,15 +409,31 @@ data JVMCodeJVMCode2,3
   | Iiconst_3Iiconst_328,29
   | Iiconst_4Iiconst_429,30
   | Iiconst_5Iiconst_530,31
-showJVM showJVM34,35
-iload iload52,53
-istore istore59,60
-iconst iconst66,67
-data LLVMCode LLVMCode75,76
-data LLVMCode = UndefinedUndefined75,76
-data Code Code76,77
-data Code = JVMC JVMC76,77
-data Code = JVMC JVMCode | LLVMC LLVMC76,77
-data Mode Mode78,79
-data Mode = JVM JVM78,79
-data Mode = JVM | LLVMLLVM78,79
+  | IswapIswap31,32
+showJVM showJVM35,36
+iload iload53,54
+istore istore60,61
+iconst iconst67,68
+type Name Name76,77
+data LLVMValLLVMVal78,79
+  = VConst VConst79,80
+  | VVar VVar80,81
+data LLVMCodeLLVMCode82,83
+  = IAllocateVar IAllocateVar83,84
+  | IAssignVar IAssignVar84,85
+  | ILoad ILoad85,86
+  | IAdd IAdd86,87
+  | ISub ISub87,88
+  | IMul IMul88,89
+  | IDiv IDiv89,90
+  | IPrint IPrint90,91
+  | ILLVMPreludeILLVMPrelude91,92
+  | ILLVMEpilogueILLVMEpilogue92,93
+registerize registerize94,95
+instance Show Show LLVMVal97,98
+  show show98,99
+instance Show Show LLVMCode101,102
+  show show102,103
+data Mode Mode113,114
+data Mode = JVM JVM113,114
+data Mode = JVM | LLVMLLVM113,114

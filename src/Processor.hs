@@ -43,4 +43,4 @@ processProgram m p = either id (const $ _processProgram m p) $ checkIdents p
 
 _processProgram :: Mode -> Program -> String
 _processProgram JVM = processJVM
-_processProgram LLVM = undefined --processLLVM
+_processProgram LLVM = processLLVM
