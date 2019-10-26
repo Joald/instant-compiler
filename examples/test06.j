@@ -10,7 +10,7 @@
 .end method
 
 .method public static main([Ljava/lang/String;)V
-.limit stack 4
+.limit stack 3
 .limit locals 15
 iconst_0
 istore_1
@@ -28,7 +28,6 @@ iconst_0
 istore 7
 iconst_1
 istore 8
-getstatic  java/lang/System/out Ljava/io/PrintStream;
 iload_3
 iload 4
 imul
@@ -44,6 +43,8 @@ iload_1
 iload_2
 imul
 iadd
+getstatic  java/lang/System/out Ljava/io/PrintStream;
+swap
 invokevirtual  java/io/PrintStream/println(I)V
 iconst_1
 istore_1
@@ -73,7 +74,6 @@ iconst_1
 istore 13
 iconst_2
 istore 14
-getstatic  java/lang/System/out Ljava/io/PrintStream;
 iload 10
 iconst_2
 idiv
@@ -109,6 +109,8 @@ imul
 iadd
 bipush 10
 idiv
+getstatic  java/lang/System/out Ljava/io/PrintStream;
+swap
 invokevirtual  java/io/PrintStream/println(I)V
 return
 .end method

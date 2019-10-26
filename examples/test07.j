@@ -10,15 +10,16 @@
 .end method
 
 .method public static main([Ljava/lang/String;)V
-.limit stack 3
+.limit stack 2
 .limit locals 1
-getstatic  java/lang/System/out Ljava/io/PrintStream;
 iconst_2
 iconst_3
 imul
 iconst_1
 swap
 isub
+getstatic  java/lang/System/out Ljava/io/PrintStream;
+swap
 invokevirtual  java/io/PrintStream/println(I)V
 return
 .end method

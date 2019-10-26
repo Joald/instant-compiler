@@ -48,10 +48,14 @@ compileStmts (SAss ident expr:stmts) = do
   when (Map.notMember ident env) $ modify $ Map.insert ident new
   rest <- compileStmts stmts
   return $ code ++ assgn : rest
-compileStmts (SExp expr:stmts) = do -- TODO: optimize stack usage of
-  code <- local (mapSnd succ) $ compileExp expr
+compileStmts (SExp expr:stmts) = do
+  code <- compileExp expr
   rest <- compileStmts stmts
-  return $ Igetstaticprint : code ++ Iinvokevirtualprint : rest
+  let expDepth = exprStackUsage expr
+  (maxSt, _) <- ask
+  return $ if expDepth == maxSt && expDepth > 1
+    then code ++ Igetstaticprint : Iswap : Iinvokevirtualprint : rest
+    else Igetstaticprint : code ++ Iinvokevirtualprint : rest
 
 compileStmts [] = gets $ (:[]) . Ilimitlocals . succ . fromIntegral . Map.size
 
@@ -123,7 +127,7 @@ maxStackUsage = foldr (max . stmtStackUsage) 0
 
 stmtStackUsage :: Stmt -> Integer
 stmtStackUsage (SAss _ expr) = exprStackUsage expr
-stmtStackUsage (SExp expr) = 1 + exprStackUsage expr
+stmtStackUsage (SExp expr) = exprStackUsage expr
 
 exprStackUsage :: Exp -> Integer
 exprStackUsage (ExpLit _) = 1

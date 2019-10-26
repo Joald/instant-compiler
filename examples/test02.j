@@ -10,12 +10,13 @@
 .end method
 
 .method public static main([Ljava/lang/String;)V
-.limit stack 3
+.limit stack 2
 .limit locals 1
-getstatic  java/lang/System/out Ljava/io/PrintStream;
 bipush 44
 iconst_2
 isub
+getstatic  java/lang/System/out Ljava/io/PrintStream;
+swap
 invokevirtual  java/io/PrintStream/println(I)V
 return
 .end method
