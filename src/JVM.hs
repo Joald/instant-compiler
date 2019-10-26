@@ -47,12 +47,12 @@ compileStmts (SAss ident expr:stmts) = do
   let assgn = istore new
   when (Map.notMember ident env) $ modify $ Map.insert ident new
   rest <- compileStmts stmts
-  return $ code ++ assgn : rest 
-compileStmts (SExp expr:stmts) = do
+  return $ code ++ assgn : rest
+compileStmts (SExp expr:stmts) = do -- TODO: optimize stack usage of
   code <- local (mapSnd succ) $ compileExp expr
   rest <- compileStmts stmts
   return $ Igetstaticprint : code ++ Iinvokevirtualprint : rest
-   
+
 compileStmts [] = gets $ (:[]) . Ilimitlocals . succ . fromIntegral . Map.size
 
 appendInstr :: JVMCode -> CodeGen -> CodeGen
@@ -134,4 +134,8 @@ exprStackUsage (ExpMul e1 e2) = opStackUsage e1 e2
 exprStackUsage (ExpDiv e1 e2) = opStackUsage e1 e2
 
 opStackUsage :: Exp -> Exp -> Integer
-opStackUsage e1 e2 = min (exprStackUsage e1) (exprStackUsage e2) + 1
+opStackUsage e1 e2 =
+  let (dep1, dep2) = (exprStackUsage e1, exprStackUsage e2) in
+    let minimum = min dep1 dep2 in
+      let maximum = max dep1 dep2 in
+        max maximum (minimum + 1)

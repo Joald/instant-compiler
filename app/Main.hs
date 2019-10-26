@@ -18,9 +18,11 @@ import Processor
 import Abs
 
 import BNFC.ErrM
-
+-- TODO: DELETE
+import JVM
+import System.IO.Unsafe
 type ParseFun a = [Token] -> Err a
-
+-- DELETE END
 myLLexer = myLexer
 
 type Verbosity = Int
@@ -71,6 +73,55 @@ main = do
     "llvm":fs -> mapM_ (runFile LLVM 2 pProgram) fs
     "jvm":fs -> mapM_ (runFile JVM 2 pProgram) fs
 
+-- TODO: DELETE
 
 
 
+checkDepth s = do
+  p <- readFile s
+  let ts = myLLexer p
+  let t = (\(Ok tr) -> tr) $ pProgram ts
+  return $ maxStackUsage $ getStmts t
+parse s = do
+  p <- readFile s
+  let ts = myLLexer p
+  return ((\(Ok tr) -> tr) $ pProgram ts)
+  
+-- DELETE END
+exp2 = ExpAdd (ExpMul (ExpVar (Ident "a")) (ExpVar (Ident "b"))) (ExpAdd (ExpMul (ExpVar (Ident "c")) (ExpVar (Ident "d"))) (ExpAdd (ExpVar (Ident "e")) (ExpAdd (ExpVar (Ident "f")) (ExpAdd (ExpVar (Ident "g")) (ExpVar (Ident "h"))))))
+
+exp3 = ExpDiv (ExpAdd (ExpMul (ExpLit 2) (ExpVar (Ident "a"))) (ExpAdd (ExpDiv (ExpVar (Ident "b")) (ExpLit 2)) (ExpAdd (ExpVar (Ident "c")) (ExpAdd (ExpVar (Ident "d")) (ExpAdd (ExpVar (Ident "e")) (ExpAdd (ExpVar (Ident "f")) (ExpAdd (ExpVar (Ident "g")) (ExpAdd (ExpVar (Ident "h")) (ExpAdd (ExpVar (Ident "i")) (ExpAdd (ExpDiv (ExpVar (Ident "j")) (ExpLit 2)) (ExpAdd (ExpVar (Ident "k")) (ExpAdd (ExpVar (Ident "l")) (ExpAdd (ExpVar (Ident "m")) (ExpVar (Ident "n"))))))))))))))) (ExpLit 10)
+
+--printE :: Exp -> String
+printE = putStrLn . unlines . snd . p
+
+p (ExpAdd e1 e2) = doP e1 e2 '+'
+p (ExpSub e1 e2) = doP e1 e2 '-'
+p (ExpMul e1 e2) = doP e1 e2 '*'
+p (ExpDiv e1 e2) = doP e1 e2 '/'
+p (ExpVar (Ident v)) = (length v, [v ++ "\n"])
+p (ExpLit x) = (length $ show x, [show x ++ "\n"])
+
+spaces n = take n $ repeat ' '
+
+doP e1 e2 sgn =
+  let (w1, l) = p e1 in
+  let (w2, r) = p e2 in
+    (w1 + w2 + 3, equalize $ (spaces w1 ++ ' ' : sgn : ' ' : spaces w2) : mergeGs l r)
+
+mergeGs l r =
+  let m = max (length l) (length r) in
+    let ll = equalize $ l ++ (take (m - length l) $ repeat []) in
+    let rr = equalize $ r ++ (take (m - length r) $ repeat []) in
+      mergeG ll rr
+
+--mergeG :: [[a]] -> [[a]] -> [String]
+mergeG (x:xs) (y:ys) = (init x ++ "   " ++ y) : mergeG xs ys
+mergeG x [] = x
+mergeG [] y = y
+
+equalize l =
+  let m = foldr (max . length) 0 l in
+    map (\x -> x ++ spaces (m - length x)) l
+  
+v = ExpVar . Ident
