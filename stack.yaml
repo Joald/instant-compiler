@@ -44,7 +44,8 @@ packages:
 
 # Extra package databases containing global packages
 # extra-package-dbs: []
-
+ghc-options:
+  "$everything": -Wall -Widentities -Wredundant-constraints -Wmonomorphism-restriction -O3
 # Control whether we use the GHC we find on the path
 # system-ghc: true
 #

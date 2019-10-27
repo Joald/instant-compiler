@@ -2,30 +2,26 @@
 module Main where
 
 
-import System.IO ( stdin, hGetContents )
-import System.Environment ( getArgs, getProgName )
-import System.Exit ( exitFailure, exitSuccess )
+import System.Environment (getArgs)
+import System.Exit (exitFailure, exitSuccess)
 import Control.Monad (when)
 
 import BNFC.LexInstant
 import BNFC.ParInstant
-import BNFC.SkelInstant
 import BNFC.PrintInstant
 import BNFC.AbsInstant
-
+import BNFC.ErrM
 
 import Processor
 import Abs
 
-import BNFC.ErrM
--- TODO: DELETE
-import JVM
-import System.IO.Unsafe
+
 type ParseFun a = [Token] -> Err a
--- DELETE END
-myLLexer = myLexer
 
 type Verbosity = Int
+
+myLLexer :: String -> [Token]
+myLLexer = myLexer
 
 putStrV :: Verbosity -> String -> IO ()
 putStrV v s = when (v > 1) $ putStrLn s
@@ -35,14 +31,12 @@ runFile mode v p f = readFile f >>= run mode v p
 
 run :: Mode -> Verbosity -> ParseFun Program -> String -> IO ()
 run mode v p s = let ts = myLLexer s in case p ts of
-           Bad s    -> do putStrLn "\nParse              Failed...\n"
+           Bad _    -> do putStrLn "\nParse              Failed...\n"
                           putStrV v "Tokens:"
                           putStrV v $ show ts
                           putStrLn s
                           exitFailure
-           Ok  tree -> do --putStrLn "\nParse Successful!"
-                          putStrLn $ processProgram mode tree
-
+           Ok  tree -> do putStrLn $ processProgram mode tree
                           exitSuccess
 
 
@@ -55,11 +49,10 @@ showTree v tree
 usage :: IO ()
 usage = do
   putStrLn $ unlines
-    [ "usage: Call with one of the following argument combinations:"
-    , "  --help          Display this help message."
-    , "  (no arguments)  Parse stdin verbosely."
-    , "  (files)         Parse content of files verbosely."
-    , "  -s (files)      Silent mode. Parse content of files silently."
+    [ "usage: Call with one of the following argument combinations:       "
+    , "  jvm file.ins         Compile Instant code to Jasmin instructions."
+    , "  llvm file.ins        Compile Instant code to LLVM IR.            "
+    , "  *                    Display this help message.                  " 
     ]
   exitFailure
 
@@ -67,61 +60,6 @@ main :: IO ()
 main = do
   args <- getArgs
   case args of
-    ["--help"] -> usage
-    [] -> putStrLn "Choose JVM or LLVM please." >> exitFailure
-    --"-s":fs -> mapM_ (runFile 0 pProgram) fs
-    "llvm":fs -> mapM_ (runFile LLVM 2 pProgram) fs
-    "jvm":fs -> mapM_ (runFile JVM 2 pProgram) fs
-
--- TODO: DELETE
-
-
-
-checkDepth s = do
-  p <- readFile s
-  let ts = myLLexer p
-  let t = (\(Ok tr) -> tr) $ pProgram ts
-  return $ maxStackUsage $ getStmts t
-parse s = do
-  p <- readFile s
-  let ts = myLLexer p
-  return ((\(Ok tr) -> tr) $ pProgram ts)
-  
--- DELETE END
-exp2 = ExpAdd (ExpMul (ExpVar (Ident "a")) (ExpVar (Ident "b"))) (ExpAdd (ExpMul (ExpVar (Ident "c")) (ExpVar (Ident "d"))) (ExpAdd (ExpVar (Ident "e")) (ExpAdd (ExpVar (Ident "f")) (ExpAdd (ExpVar (Ident "g")) (ExpVar (Ident "h"))))))
-
-exp3 = ExpDiv (ExpAdd (ExpMul (ExpLit 2) (ExpVar (Ident "a"))) (ExpAdd (ExpDiv (ExpVar (Ident "b")) (ExpLit 2)) (ExpAdd (ExpVar (Ident "c")) (ExpAdd (ExpVar (Ident "d")) (ExpAdd (ExpVar (Ident "e")) (ExpAdd (ExpVar (Ident "f")) (ExpAdd (ExpVar (Ident "g")) (ExpAdd (ExpVar (Ident "h")) (ExpAdd (ExpVar (Ident "i")) (ExpAdd (ExpDiv (ExpVar (Ident "j")) (ExpLit 2)) (ExpAdd (ExpVar (Ident "k")) (ExpAdd (ExpVar (Ident "l")) (ExpAdd (ExpVar (Ident "m")) (ExpVar (Ident "n"))))))))))))))) (ExpLit 10)
-
---printE :: Exp -> String
-printE = putStrLn . unlines . snd . p
-
-p (ExpAdd e1 e2) = doP e1 e2 '+'
-p (ExpSub e1 e2) = doP e1 e2 '-'
-p (ExpMul e1 e2) = doP e1 e2 '*'
-p (ExpDiv e1 e2) = doP e1 e2 '/'
-p (ExpVar (Ident v)) = (length v, [v ++ "\n"])
-p (ExpLit x) = (length $ show x, [show x ++ "\n"])
-
-spaces n = take n $ repeat ' '
-
-doP e1 e2 sgn =
-  let (w1, l) = p e1 in
-  let (w2, r) = p e2 in
-    (w1 + w2 + 3, equalize $ (spaces w1 ++ ' ' : sgn : ' ' : spaces w2) : mergeGs l r)
-
-mergeGs l r =
-  let m = max (length l) (length r) in
-    let ll = equalize $ l ++ (take (m - length l) $ repeat []) in
-    let rr = equalize $ r ++ (take (m - length r) $ repeat []) in
-      mergeG ll rr
-
---mergeG :: [[a]] -> [[a]] -> [String]
-mergeG (x:xs) (y:ys) = (init x ++ "   " ++ y) : mergeG xs ys
-mergeG x [] = x
-mergeG [] y = y
-
-equalize l =
-  let m = foldr (max . length) 0 l in
-    map (\x -> x ++ spaces (m - length x)) l
-  
-v = ExpVar . Ident
+    "llvm":file:_ -> runFile LLVM 2 pProgram file
+    "jvm":file:_  -> runFile JVM 2 pProgram file
+    _             -> usage

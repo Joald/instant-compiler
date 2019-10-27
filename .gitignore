@@ -2,3 +2,6 @@
 instant.cabal
 *~
 TAGS
+examples/*.j
+examples/*.bc
+examples/*.ll
