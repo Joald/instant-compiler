@@ -1,15 +1,15 @@
 {-# LANGUAGE FlexibleContexts #-}
 module JVM where
 
-import BNFC.AbsInstant
-import Abs
-import Data.Map (Map)
+import           Abs
+import           BNFC.AbsInstant
+import           Control.Monad.Reader
+import           Control.Monad.State
+import           Data.List
+import           Data.Map (Map)
 import qualified Data.Map as Map
-import Control.Monad.Reader
-import Control.Monad.State
-import Data.Maybe
-import Data.List
-import System.Environment
+import           Data.Maybe
+import           System.Environment
 
 --                     max      cur
 type JVMM = ReaderT (Integer, Integer) (State (Map Ident Integer))
@@ -67,11 +67,11 @@ jvmToString code = do
 
 processJVM :: Program -> IO ()
 processJVM prog =
-  let depth = maxStackUsage $ getStmts prog in
-      bakeJVM depth $ evalState (runReaderT (compileProgram prog) (depth, 0)) Map.empty
+  let depth = maxStackUsage $ getStmts prog
+   in bakeJVM depth $ evalState (runReaderT (compileProgram prog) (depth, 0)) Map.empty
 
 bakeJVM :: Integer -> [JVMCode] -> IO ()
-bakeJVM  depth code = do
+bakeJVM depth code = do
   let opt = optimize depth code
   fin <- finalize opt
   putStrLn $ concat . flip evalState 0 $ mapM jvmToString fin
@@ -103,9 +103,10 @@ compileStmts (SExp expr:stmts) = do
   rest <- compileStmts stmts
   let expDepth = exprStackUsage expr
   (maxSt, _) <- ask
-  return $ if expDepth == maxSt && expDepth > 1
-    then code ++ Igetstaticprint : Iswap : Iinvokevirtualprint : rest
-    else Igetstaticprint : code ++ Iinvokevirtualprint : rest
+  return $
+    if expDepth == maxSt && expDepth > 1
+      then code ++ Igetstaticprint : Iswap : Iinvokevirtualprint : rest
+      else Igetstaticprint : code ++ Iinvokevirtualprint : rest
 
 compileStmts [] = gets $ (:[]) . Ilimitlocals . succ . fromIntegral . Map.size
 
@@ -123,10 +124,10 @@ compileExp (ExpVar ident) = (:[]) . iload <$> gets (fromJust . Map.lookup ident)
 
 compileCommutative :: Exp -> Exp -> CodeGen
 compileCommutative e1 e2 = do
- let (dep1, dep2) = (exprStackUsage e1, exprStackUsage e2)
- if dep1 >= dep2
-   then compileOrderedExps e1 e2
-   else compileOrderedExps e2 e1
+  let (dep1, dep2) = (exprStackUsage e1, exprStackUsage e2)
+  if dep1 >= dep2
+    then compileOrderedExps e1 e2
+    else compileOrderedExps e2 e1
 
 compileOrderedExps :: Exp -> Exp -> CodeGen
 compileOrderedExps e1 e2 = do
@@ -136,15 +137,15 @@ compileOrderedExps e1 e2 = do
 
 compileNonCommutative :: Exp -> Exp -> CodeGen
 compileNonCommutative e1 e2 = do
- (maxSt, curSt) <- ask
- let (dep1, dep2) = (exprStackUsage e1, exprStackUsage e2)
- if dep1 < dep2 && curSt + dep2 + 2 > maxSt
-   then appendInstr Iswap $ compileOrderedExps e2 e1
-   else compileOrderedExps e1 e2
+  (maxSt, curSt) <- ask
+  let (dep1, dep2) = (exprStackUsage e1, exprStackUsage e2)
+  if dep1 < dep2 && curSt + dep2 + 2 > maxSt
+    then appendInstr Iswap $ compileOrderedExps e2 e1
+    else compileOrderedExps e1 e2
 
 
 maxStackUsage :: [Stmt] -> Integer
-maxStackUsage  = foldr (max . stmtStackUsage) 0
+maxStackUsage = foldr (max . stmtStackUsage) 0
 
 stmtStackUsage :: Stmt -> Integer
 stmtStackUsage (SAss _ expr) = exprStackUsage expr
@@ -160,7 +161,7 @@ exprStackUsage (ExpDiv e1 e2) = opStackUsage e1 e2
 
 opStackUsage :: Exp -> Exp -> Integer
 opStackUsage e1 e2 =
-  let (dep1, dep2) = (exprStackUsage e1, exprStackUsage e2) in
-    let mini = min dep1 dep2 in
-      let maxi = max dep1 dep2 in
-        max maxi (mini + 1)
+  let (dep1, dep2) = (exprStackUsage e1, exprStackUsage e2)
+   in let mini = min dep1 dep2
+       in let maxi = max dep1 dep2
+           in max maxi (mini + 1)

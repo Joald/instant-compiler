@@ -1,14 +1,15 @@
 module Processor (processProgram, checkIdents) where
 
-import Data.Set (Set)
+import           Data.Set (Set)
 import qualified Data.Set as Set
-import Control.Monad.Except
-import Control.Monad.Reader
+import           Control.Monad.Except
+import           Control.Monad.Reader
 
-import Abs
-import BNFC.AbsInstant
-import JVM (processJVM)
-import LLVM (processLLVM)
+import           Abs
+import           BNFC.AbsInstant
+import           JVM (processJVM)
+import           LLVM (processLLVM)
+
 type IdChk = ExceptT String (Reader (Set Ident))
 
 checkExp :: Exp -> IdChk ()
