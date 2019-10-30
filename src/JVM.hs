@@ -1,3 +1,4 @@
+{-# LANGUAGE FlexibleContexts #-}
 module JVM where
 
 import BNFC.AbsInstant
@@ -18,8 +19,42 @@ mapSnd f (x, y) = (x, f y)
 
 type CodeGen = JVMM [JVMCode]
 
-jvmToString :: JVMCode -> String
-jvmToString code = showJVM code ++ "\n"
+--- TODO: DELET
+stackUsage :: JVMCode -> Integer
+stackUsage Igetstaticprint = 1
+stackUsage Iinvokevirtualprint = -2
+stackUsage (Iiload _) = 1
+stackUsage Iiload_0 = 1
+stackUsage Iiload_1 = 1
+stackUsage Iiload_2 = 1
+stackUsage Iiload_3 = 1
+stackUsage Iiadd = -1
+stackUsage Iisub = -1
+stackUsage Iimul = -1
+stackUsage Iidiv = -1
+stackUsage (Iistore _) = -1
+stackUsage Iistore_0 = -1
+stackUsage Iistore_1 = -1
+stackUsage Iistore_2 = -1
+stackUsage Iistore_3 = -1
+stackUsage (Ibipush _) = 1
+stackUsage (Isipush _) = 1
+stackUsage (Ildc _) = 1
+stackUsage Iiconst_m1 = 1
+stackUsage Iiconst_0 = 1
+stackUsage Iiconst_1 = 1
+stackUsage Iiconst_2 = 1
+stackUsage Iiconst_3 = 1
+stackUsage Iiconst_4 = 1
+stackUsage Iiconst_5 = 1
+stackUsage _ = 0
+--- TODO: END
+jvmToString :: MonadState Integer m => JVMCode -> m String
+jvmToString code = do
+  stack <- get
+  let newStack = stack + stackUsage code
+  modify (+ stackUsage code)
+  return $ showJVM code ++ " ; " ++ show newStack ++ "\n"
 
 processJVM :: Program -> String
 processJVM prog =
@@ -27,7 +62,7 @@ processJVM prog =
       bakeJVM depth $ evalState (runReaderT (compileProgram prog) (depth, 0)) Map.empty
 
 bakeJVM :: Integer -> [JVMCode] -> String
-bakeJVM depth = concatMap jvmToString . finalize . optimize depth
+bakeJVM depth = concat . flip evalState 0 . mapM jvmToString . finalize . optimize depth
 
 finalize :: [JVMCode] -> [JVMCode]
 finalize l = IPrelude : l ++ [IEpilogue]
@@ -89,7 +124,7 @@ compileNonCommutative :: Exp -> Exp -> CodeGen
 compileNonCommutative e1 e2 = do
  (maxSt, curSt) <- ask
  let (dep1, dep2) = (exprStackUsage e1, exprStackUsage e2)
- if dep1 < dep2 && curSt + dep2 + 1 > maxSt
+ if dep1 < dep2 && curSt + dep2 + 2 > maxSt
    then appendInstr Iswap $ compileOrderedExps e2 e1
    else compileOrderedExps e1 e2
 

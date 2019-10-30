@@ -29,6 +29,8 @@ data JVMCode
   | Iiconst_3
   | Iiconst_4
   | Iiconst_5
+  | Isipush Integer
+  | Ildc Integer
   | Iswap
   -- TBC
   deriving Show

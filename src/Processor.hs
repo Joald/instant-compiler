@@ -1,4 +1,4 @@
-module Processor (processProgram) where
+module Processor (processProgram, checkIdents) where
 
 import Data.Set (Set)
 import qualified Data.Set as Set

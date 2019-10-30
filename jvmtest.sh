@@ -1,14 +1,27 @@
 #!/bin/bash
-
 set -e
 
+runTest() {
+    pref=$1
+    i=$2
+    printf "Test %d:\n" $i
+    rm -f examples/$pref$i.j
+    stack run jvm examples/$pref$i.ins > examples/$pref$i.j
+    java -jar jasmin.jar examples/$pref$i.j >/dev/null
+    java C > out.out
+    diff out.out "examples/$pref$i.output" 
+    if [ $? -ne 0 ]; then
+        printf "Test failed!\nCorrect output: %d\nYour output: %d" $correct $yours
+    else
+        printf "OK\n"
+    fi
+    rm C.class out.out
+}
+
 for i in $(seq 1 7); do
-    rm -f examples/test0$i.j
-    stack run jvm examples/test0$i.ins > examples/test0$i.j
-    java -jar jasmin.jar examples/test0$i.j 
-    echo "Correct output:"
-    cat examples/test0$i.output
-    echo "Your output:"
-    java C
-    rm C.class
+    runTest test0 $i
+done
+printf "\n\nNow generated tests...\n\n"
+for i in $(seq 0 49); do
+    runTest gen $i
 done
