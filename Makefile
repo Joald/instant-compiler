@@ -1,4 +1,2 @@
-
 all:
-clean:
-
+	stack build
