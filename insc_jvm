@@ -1,4 +1,4 @@
-$!/bin/bash
+#!/bin/bash
 base=${1%.ins}
 stack run jvm $1 > $base.j
-java -jar lib/jasmin.jar $base.j
+java -jar lib/jasmin.jar -d $(dirname $base) $base.j
