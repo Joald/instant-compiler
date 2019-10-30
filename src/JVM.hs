@@ -8,6 +8,8 @@ import qualified Data.Map as Map
 import Control.Monad.Reader
 import Control.Monad.State
 import Data.Maybe
+import Data.List
+import System.Environment
 
 --                     max      cur
 type JVMM = ReaderT (Integer, Integer) (State (Map Ident Integer))
@@ -19,7 +21,6 @@ mapSnd f (x, y) = (x, f y)
 
 type CodeGen = JVMM [JVMCode]
 
---- TODO: DELET
 stackUsage :: JVMCode -> Integer
 stackUsage Igetstaticprint = 1
 stackUsage Iinvokevirtualprint = -2
@@ -48,7 +49,15 @@ stackUsage Iiconst_3 = 1
 stackUsage Iiconst_4 = 1
 stackUsage Iiconst_5 = 1
 stackUsage _ = 0
---- TODO: END
+
+getFileName :: IO String
+getFileName = do
+  args <- getArgs
+  let path = args !! 1
+  let rpath = reverse path
+  let fname = take (fromMaybe (length fname) $ elemIndex '/' rpath) rpath
+  return $ reverse $ drop 4 fname
+
 jvmToString :: MonadState Integer m => JVMCode -> m String
 jvmToString code = do
   stack <- get
@@ -56,16 +65,21 @@ jvmToString code = do
   modify (+ stackUsage code)
   return $ showJVM code ++ " ; " ++ show newStack ++ "\n"
 
-processJVM :: Program -> String
+processJVM :: Program -> IO ()
 processJVM prog =
   let depth = maxStackUsage $ getStmts prog in
       bakeJVM depth $ evalState (runReaderT (compileProgram prog) (depth, 0)) Map.empty
 
-bakeJVM :: Integer -> [JVMCode] -> String
-bakeJVM depth = concat . flip evalState 0 . mapM jvmToString . finalize . optimize depth
+bakeJVM :: Integer -> [JVMCode] -> IO ()
+bakeJVM  depth code = do
+  let opt = optimize depth code
+  fin <- finalize opt
+  putStrLn $ concat . flip evalState 0 $ mapM jvmToString fin
 
-finalize :: [JVMCode] -> [JVMCode]
-finalize l = IPrelude : l ++ [IEpilogue]
+finalize :: [JVMCode] -> IO [JVMCode]
+finalize l = do
+  fname <- getFileName
+  return $ IPrelude fname : l ++ [IEpilogue]
 
 optimize :: Integer -> [JVMCode] -> [JVMCode]
 optimize depth _l = Ilimitstack depth : l

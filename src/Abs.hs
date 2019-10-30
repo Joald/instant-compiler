@@ -1,7 +1,7 @@
 module Abs where
 
 data JVMCode
-  = IPrelude
+  = IPrelude String
   | IEpilogue
   | Ilimitlocals Integer
   | Ilimitstack Integer
@@ -36,8 +36,8 @@ data JVMCode
   deriving Show
 
 showJVM :: JVMCode -> String
-showJVM IPrelude = ".bytecode 47.0\n\n\
-                   \.class C\n\
+showJVM (IPrelude name) = ".bytecode 47.0\n\n\
+                   \.class " ++ name ++ "\n\
                    \.super java/lang/Object\n\n\
                    \.method public <init>()V\n\
                    \  aload_0\n\
@@ -74,7 +74,10 @@ iconst 2 = Iiconst_2
 iconst 3 = Iiconst_3
 iconst 4 = Iiconst_4
 iconst 5 = Iiconst_5
-iconst n = Ibipush n
+iconst n
+  | n < 128 = Ibipush n
+  | n < 32768 = Isipush n
+  | otherwise = Ildc n
 
 type Name = String
 

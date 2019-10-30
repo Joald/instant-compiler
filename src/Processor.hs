@@ -38,9 +38,9 @@ checkIdents (Prog l) = runReader (runExceptT $ go l) Set.empty
     go (SExp expr:xs) = checkExp expr >> go xs
     go [] = return ()
 
-processProgram :: Mode -> Program -> String
-processProgram m p = either id (const $ _processProgram m p) $ checkIdents p
+processProgram :: Mode -> Program -> IO ()
+processProgram m p = either putStrLn (const $ _processProgram m p) $ checkIdents p
 
-_processProgram :: Mode -> Program -> String
+_processProgram :: Mode -> Program -> IO ()
 _processProgram JVM = processJVM
 _processProgram LLVM = processLLVM

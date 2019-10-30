@@ -36,7 +36,7 @@ run mode v p s = let ts = myLLexer s in case p ts of
                           putStrV v $ show ts
                           putStrLn s
                           exitFailure
-           Ok  tree -> do putStrLn $ processProgram mode tree
+           Ok  tree -> do processProgram mode tree
                           exitSuccess
 
 

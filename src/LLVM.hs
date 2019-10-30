@@ -19,8 +19,8 @@ freshName = do
   put $ old + 1
   return $ 's' : show old
 
-processLLVM :: Program -> String
-processLLVM prog = bakeLLVM $ evalState (runReaderT (compileProgram prog) Map.empty) 0
+processLLVM :: Program -> IO ()
+processLLVM prog = putStrLn $ bakeLLVM $ evalState (runReaderT (compileProgram prog) Map.empty) 0
 
 bakeLLVM :: [LLVMCode] -> String
 bakeLLVM = concatMap (("  "++) . (++"\n") . show) . (ILLVMPrelude:) . (++[ILLVMEpilogue])

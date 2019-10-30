@@ -8,10 +8,7 @@ runTest() {
     rm -rf examples/$pref$i.ll
     stack run llvm examples/$pref$i.ins > examples/$pref$i.ll
     llvm-as -o examples/$pref$i.bc examples/$pref$i.ll
-    llvm-link -o out.bc examples/$pref$i.bc ../llvm/runtime.bc
-#    echo "Correct output:"
-#    cat examples/$pref$i.output
-#    echo "Your output:"
+    llvm-link -o out.bc examples/$pref$i.bc lib/runtime.bc
     lli out.bc >out.out
     diff out.out "examples/$pref$i.output"
     printf "OK\n"

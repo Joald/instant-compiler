@@ -7,15 +7,15 @@ runTest() {
     printf "Test %d:\n" $i
     rm -f examples/$pref$i.j
     stack run jvm examples/$pref$i.ins > examples/$pref$i.j
-    java -jar jasmin.jar examples/$pref$i.j >/dev/null
-    java C > out.out
-    diff out.out "examples/$pref$i.output" 
+    java -jar lib/jasmin.jar examples/$pref$i.j
+    java $pref$i > out.out
+    diff out.out "examples/$pref$i.output"
     if [ $? -ne 0 ]; then
         printf "Test failed!\nCorrect output: %d\nYour output: %d" $correct $yours
     else
         printf "OK\n"
     fi
-    rm C.class out.out
+    rm $pref$i.class out.out
 }
 
 for i in $(seq 1 7); do
